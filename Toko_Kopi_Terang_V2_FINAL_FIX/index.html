@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toko Buku & Kopi Terang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script type="module" src="supabase.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Toko Buku & Kopi Terang</h1>
+    <nav>
+      <button onclick="switchTab('penjualan')">Laporan Penjualan</button>
+      <button onclick="switchTab('produk')">Database Produk</button>
+      <button onclick="switchTab('riwayat')">Riwayat Penjualan</button>
+    </nav>
+
+    <section id="penjualan" class="tab active">
+      <div class="summary">
+        <p>Total Omzet: <span id="totalOmzet">Rp 0</span></p>
+        <p>Total Laba: <span id="totalLaba">Rp 0</span></p>
+        <p>Terlaris: <span id="terlaris">-</span></p>
+      </div>
+      <div class="form-row">
+        <select id="productSelect"></select>
+        <input type="number" id="quantityInput" min="1" value="1">
+        <button onclick="addOrder()">Tambah Order</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Produk</th><th>Qty</th><th>Harga</th><th>HPP</th><th>Laba</th><th>Aksi</th></tr>
+        </thead>
+        <tbody id="orderTable"></tbody>
+      </table>
+    </section>
+
+    <section id="produk" class="tab">
+      <div class="form-row">
+        <input type="text" id="newName" placeholder="Nama Produk">
+        <input type="number" id="newPrice" placeholder="Harga Jual">
+        <input type="number" id="newHpp" placeholder="HPP">
+        <button onclick="addProduct()">Tambah Produk</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Nama Produk</th><th>Harga</th><th>HPP</th></tr>
+        </thead>
+        <tbody id="productTable"></tbody>
+      </table>
+    </section>
+
+    <section id="riwayat" class="tab">
+      <div class="form-row">
+        <input type="date" id="filterDate" onchange="renderHistoryTable()">
+        <select id="sortDirection" onchange="renderHistoryTable()">
+          <option value="desc">Terbaru</option>
+          <option value="asc">Terlama</option>
+        </select>
+        <button onclick="downloadExcel()">Download Excel</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Tanggal</th><th>Produk</th><th>Qty</th><th>Harga</th><th>HPP</th><th>Laba</th></tr>
+        </thead>
+        <tbody id="historyTable"></tbody>
+      </table>
+    </section>
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+    }
+  </script>
+</body>
+</html>
